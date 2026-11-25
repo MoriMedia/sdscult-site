@@ -30,11 +30,14 @@ button:disabled{opacity:.5;cursor:default}
 .note{margin:-4px 0 0;font-size:12px;color:#8a8a8a}
 footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;padding:24px clamp(20px,5vw,56px) 32px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a}
 footer b{color:#fff;font-weight:400}
+h1{position:relative}
+.bl{display:inline-block;width:0;height:0;vertical-align:baseline}
+.face{position:absolute;width:0;height:0;pointer-events:none}
 </style>
 </head>
 <body>
 <main>
-<h1>SDSCULT.COM</h1>
+<h1>SDSCULT.COM<i class="bl"></i><svg class="face" viewBox="0 0 10 10" aria-hidden="true"><circle cx="3.2" cy="3.7" r=".85" fill="#000"/><circle cx="6.8" cy="3.7" r=".85" fill="#000"/><path d="M2.7 5.9 Q5 8.3 7.3 5.9" stroke="#000" stroke-width=".9" fill="none" stroke-linecap="round"/></svg></h1>
 <p class="tag">join the cult</p>
 <form id="f" novalidate>
 <label for="email" class="sr">Email address</label>
@@ -63,6 +66,26 @@ fetch(URL_,{method:'POST',mode:'no-cors',body:new URLSearchParams({'entry.183347
 .then(done)
 .catch(function(){f.querySelector('button').disabled=false;m.textContent='something went wrong, try again'});
 });
+</script>
+<script>
+// fit the smiley exactly onto the real period glyph (period size unchanged)
+function fitFace(){
+ var h=document.querySelector('h1'),bl=h.querySelector('.bl'),fc=h.querySelector('.face'),t=h.firstChild;
+ var cs=getComputedStyle(h),cx=document.createElement('canvas').getContext('2d');
+ cx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+ var m=cx.measureText('.'),hr=h.getBoundingClientRect(),b=bl.getBoundingClientRect().top-hr.top;
+ var rg=document.createRange();rg.setStart(t,7);rg.setEnd(t,8);var x0=rg.getBoundingClientRect().left-hr.left;
+ var L=-m.actualBoundingBoxLeft,R=m.actualBoundingBoxRight,A=m.actualBoundingBoxAscent,D=m.actualBoundingBoxDescent;
+ fc.style.left=(x0+L)+'px';fc.style.top=(b-A)+'px';fc.style.width=(R-L)+'px';fc.style.height=(A+D)+'px';
+ var wpx=R-L,dev=wpx*(window.devicePixelRatio||1);
+ // too few real pixels to draw a face: show the plain period instead
+ fc.style.display=dev<11?'none':'';
+ // small dot (phones): slightly bolder eyes and smile
+ var bold=wpx<9,e=fc.querySelectorAll('circle'),sm=fc.querySelector('path');
+ e[0].setAttribute('r',bold?1.05:.85);e[1].setAttribute('r',bold?1.05:.85);
+ sm.setAttribute('stroke-width',bold?1.2:.9);sm.setAttribute('d',bold?'M2.6 5.8 Q5 8.5 7.4 5.8':'M2.7 5.9 Q5 8.3 7.3 5.9');
+}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(fitFace);window.addEventListener('resize',fitFace);
 </script>
 </body>
 </html>
