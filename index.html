@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SDS | join the cult</title>
+<meta name="description" content="SDS. First drop: Saint and Sinner. Coming soon.">
+<meta property="og:title" content="SDSCULT.COM">
+<meta property="og:description" content="join the cult">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;color:#fff}
+body{font-family:Inter,-apple-system,"Helvetica Neue",Arial,sans-serif;min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px;gap:18px}
+h1{margin:0;font-weight:600;font-size:clamp(36px,6vw,64px);letter-spacing:.01em;line-height:1}
+.tag{margin:0;font-size:clamp(22px,3vw,32px);line-height:1.2}
+form{display:flex;align-items:center;gap:16px;margin-top:40px;width:100%;max-width:340px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+input{flex:1;min-width:0;height:44px;padding:0 2px;background:transparent;border:0;border-bottom:1px solid #555;border-radius:0;color:#fff;font:inherit;font-size:16px;outline:none}
+input:focus{border-bottom-color:#fff}
+input::placeholder{color:#8a8a8a}
+button{height:44px;padding:0 4px;background:transparent;color:#fff;border:0;font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+#msg{margin:0;min-height:20px;font-size:14px;color:#a8a8a8}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 24px;padding:24px clamp(20px,5vw,56px) 32px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a}
+footer b{color:#fff;font-weight:400}
+</style>
+</head>
+<body>
+<main>
+<h1>SDSCULT.COM</h1>
+<p class="tag">join the cult</p>
+<form id="f" novalidate>
+<label for="email" class="sr">Email address</label>
+<input id="email" name="email" type="email" placeholder="email" autocomplete="email" required>
+<button type="submit">enter</button>
+</form>
+<p id="msg" role="status"></p>
+</main>
+<footer>
+<span>First drop: <b>Saint and Sinner</b>. Coming soon</span>
+<span>Est. 2026</span>
+</footer>
+<script>
+var URL_='https://docs.google.com/forms/d/e/1FAIpQLSc36sBR2913w_otKHXJnZS7oCMNvoyhGPVOQdTc8WO0CwP5hw/formResponse';
+var f=document.getElementById('f'),m=document.getElementById('msg');
+f.addEventListener('submit',function(e){
+e.preventDefault();
+var v=f.email.value.trim();
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){m.textContent='enter a valid email';return}
+f.querySelector('button').disabled=true;m.textContent='';
+fetch(URL_,{method:'POST',mode:'no-cors',body:new URLSearchParams({'entry.1833472718':v})})
+.then(function(){f.style.display='none';m.style.color='#d0d0d0';m.style.fontSize='16px';m.textContent="you're in."})
+.catch(function(){f.querySelector('button').disabled=false;m.textContent='something went wrong, try again'});
+});
+</script>
+</body>
+</html>
