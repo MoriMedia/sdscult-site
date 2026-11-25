@@ -39,6 +39,7 @@ footer b{color:#fff;font-weight:400}
 <form id="f" novalidate>
 <label for="email" class="sr">Email address</label>
 <input id="email" name="email" type="email" placeholder="email" autocomplete="email" required>
+<div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="hp_url">Leave this empty</label><input id="hp_url" name="hp_url" type="text" tabindex="-1" autocomplete="off"></div>
 <button type="submit">enter</button>
 </form>
 <p id="msg" role="status"></p>
@@ -50,14 +51,16 @@ footer b{color:#fff;font-weight:400}
 </footer>
 <script>
 var URL_='https://docs.google.com/forms/d/e/1FAIpQLSc36sBR2913w_otKHXJnZS7oCMNvoyhGPVOQdTc8WO0CwP5hw/formResponse';
-var f=document.getElementById('f'),m=document.getElementById('msg');
+var f=document.getElementById('f'),m=document.getElementById('msg'),t0=Date.now();
+function done(){f.style.display='none';document.querySelector('.note').style.display='none';m.style.color='#d0d0d0';m.style.fontSize='16px';m.textContent="you're in."}
 f.addEventListener('submit',function(e){
 e.preventDefault();
 var v=f.email.value.trim();
 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){m.textContent='enter a valid email';return}
+if(f.hp_url.value||Date.now()-t0<2000){done();return}
 f.querySelector('button').disabled=true;m.textContent='';
 fetch(URL_,{method:'POST',mode:'no-cors',body:new URLSearchParams({'entry.1833472718':v})})
-.then(function(){f.style.display='none';document.querySelector('.note').style.display='none';m.style.color='#d0d0d0';m.style.fontSize='16px';m.textContent="you're in."})
+.then(done)
 .catch(function(){f.querySelector('button').disabled=false;m.textContent='something went wrong, try again'});
 });
 </script>
